@@ -1,5 +1,6 @@
+import type React from 'react';
 import { useState, useEffect } from 'react';
-import { getMovies, setPage } from './movieSlice';
+import { getMovies, setPage, setYear, setType } from './movieSlice';
 import type { RootState } from '../../app/store';
 import {
   Box,
@@ -14,7 +15,11 @@ import {
   Paper,
   Pagination,
   Typography,
-} from '@mui/material';
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl, SelectChangeEvent
+} from "@mui/material"
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 
@@ -23,11 +28,13 @@ const MoviesList = () => {
   const movies = useAppSelector((state: RootState) => state.movies.movies);
   const page = useAppSelector((state: RootState) => state.movies.page);
   const totalResults = useAppSelector((state: RootState) => state.movies.totalResults);
+  const year = useAppSelector((state: RootState) => state.movies.year);
+  const type = useAppSelector((state: RootState) => state.movies.type);
   const [searchTerm, setSearchTerm] = useState('Pokemon');
 
   useEffect(() => {
     dispatch(getMovies(searchTerm));
-  }, [dispatch, searchTerm, page]);
+  }, [dispatch, searchTerm, page, year, type]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -37,8 +44,17 @@ const MoviesList = () => {
     dispatch(setPage(value));
   };
 
+  const handleYearChange = (event: SelectChangeEvent<unknown>) => {
+    dispatch(setYear(event.target.value as string));
+  };
+
+  const handleTypeChange = (event: SelectChangeEvent<unknown>):any => {
+    dispatch(setType(event.target.value as string));
+  };
+
   const totalPages = Math.ceil(totalResults / 10); // 10 filmlik sayfa sayısı
 
+  // @ts-ignore
   return (
     <Container>
       <Box my={4}>
@@ -53,6 +69,40 @@ const MoviesList = () => {
           onChange={handleSearchChange}
           margin="normal"
         />
+        <Box my={2} display="flex" justifyContent="space-between">
+          <FormControl variant="outlined">
+            <InputLabel>Year</InputLabel>
+            <Select
+              value={year}
+              onChange={handleYearChange}
+              label="Year"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {Array.from(new Array(50), (x, i) => 2023 - i).map((year) => (
+                <MenuItem key={year} value={year}>
+                  {year}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl variant="outlined">
+            <InputLabel>Type</InputLabel>
+            <Select
+              value={type}
+              onChange={handleTypeChange}
+              label="Type"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="movie">Movie</MenuItem>
+              <MenuItem value="series">TV Series</MenuItem>
+              <MenuItem value="episode">TV Episode</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>

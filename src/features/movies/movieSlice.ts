@@ -17,6 +17,8 @@ interface MovieState {
   movieDetails: Movie | null;
   page: number;
   totalResults: number;
+  year: string;
+  type: string;
 }
 
 const initialState: MovieState = {
@@ -26,14 +28,16 @@ const initialState: MovieState = {
   movieDetails: null,
   page: 1,
   totalResults: 0,
+  year: '',
+  type: '',
 };
 
 export const getMovies = createAsyncThunk(
   'movies/getMovies',
   async (searchTerm: string, { getState }) => {
     const state = getState() as RootState;
-    const page = state.movies.page;
-    const response = await fetchMovies(searchTerm, page);
+    const { page, year, type } = state.movies;
+    const response = await fetchMovies(searchTerm, page, year, type);
     return response;
   }
 );
@@ -52,6 +56,12 @@ const moviesSlice = createSlice({
   reducers: {
     setPage(state, action) {
       state.page = action.payload;
+    },
+    setYear(state, action) {
+      state.year = action.payload;
+    },
+    setType(state, action) {
+      state.type = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -82,6 +92,6 @@ const moviesSlice = createSlice({
   }
 });
 
-export const { setPage } = moviesSlice.actions;
+export const { setPage, setYear, setType } = moviesSlice.actions;
 
 export default moviesSlice.reducer;
