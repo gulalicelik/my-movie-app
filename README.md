@@ -4,7 +4,7 @@ My Movie App is a Single Page Application (SPA) built with React and Redux. It a
 
 ## Demo
 
-Check out the live demo of the application [here](#).
+Check out the live demo of the application [here](https://my-movie-app-invent.netlify.app/).
 
 ## Features
 
