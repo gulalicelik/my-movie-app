@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios"
 
-const apiKey = import.meta.env.VITE_OMDB_API_KEY as string;
-const apiUrl = import.meta.env.VITE_OMDB_BASE_URL as string;
+const apiKey = import.meta.env.VITE_OMDB_API_KEY
+const apiUrl = import.meta.env.VITE_OMDB_API_URL
 
 export const fetchMovies = async (searchTerm: string, page: number = 1) => {
   try {
@@ -9,27 +9,30 @@ export const fetchMovies = async (searchTerm: string, page: number = 1) => {
       params: {
         s: searchTerm,
         page: page,
-        apiKey: apiKey,
-      },
-    });
-    return response.data;
+        apiKey: apiKey
+      }
+    })
+    return {
+      movies: response.data.Search,
+      totalResults: response.data.totalResults
+    }
   } catch (error) {
-    console.error('Error fetching movies:', error);
-    throw error;
+    console.error("Error fetching movies:", error)
+    throw error
   }
-};
+}
 
 export const fetchMovieDetails = async (imdbID: string) => {
   try {
     const response = await axios.get(apiUrl, {
       params: {
         i: imdbID,
-        apiKey: apiKey,
-      },
-    });
-    return response.data;
+        apiKey: apiKey
+      }
+    })
+    return response.data
   } catch (error) {
-    console.error('Error fetching movie details:', error);
-    throw error;
+    console.error("Error fetching movie details:", error)
+    throw error
   }
-};
+}

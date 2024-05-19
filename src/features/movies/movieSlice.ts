@@ -16,6 +16,7 @@ interface MovieState {
   error: string | null;
   movieDetails: Movie | null;
   page: number;
+  totalResults: number;
 }
 
 const initialState: MovieState = {
@@ -24,6 +25,7 @@ const initialState: MovieState = {
   error: null,
   movieDetails: null,
   page: 1,
+  totalResults: 0,
 };
 
 export const getMovies = createAsyncThunk(
@@ -32,7 +34,7 @@ export const getMovies = createAsyncThunk(
     const state = getState() as RootState;
     const page = state.movies.page;
     const response = await fetchMovies(searchTerm, page);
-    return response.Search;
+    return response;
   }
 );
 
@@ -59,7 +61,8 @@ const moviesSlice = createSlice({
       })
       .addCase(getMovies.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.movies = action.payload;
+        state.movies = action.payload.movies;
+        state.totalResults = action.payload.totalResults;
       })
       .addCase(getMovies.rejected, (state, action) => {
         state.status = 'failed';

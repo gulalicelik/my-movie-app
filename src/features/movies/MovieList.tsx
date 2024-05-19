@@ -22,6 +22,7 @@ const MoviesList = () => {
   const dispatch = useAppDispatch();
   const movies = useAppSelector((state: RootState) => state.movies.movies);
   const page = useAppSelector((state: RootState) => state.movies.page);
+  const totalResults = useAppSelector((state: RootState) => state.movies.totalResults);
   const [searchTerm, setSearchTerm] = useState('Pokemon');
 
   useEffect(() => {
@@ -35,6 +36,8 @@ const MoviesList = () => {
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     dispatch(setPage(value));
   };
+
+  const totalPages = Math.ceil(totalResults / 10); // 10 filmlik sayfa sayısı
 
   return (
     <Container>
@@ -76,7 +79,7 @@ const MoviesList = () => {
         </TableContainer>
         <Box my={2} display="flex" justifyContent="center">
           <Pagination
-            count={10} // Sayfa sayısını dinamik hale getirebilirsiniz
+            count={totalPages}
             page={page}
             onChange={handlePageChange}
             color="primary"
