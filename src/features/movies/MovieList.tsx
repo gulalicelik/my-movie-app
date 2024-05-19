@@ -117,6 +117,7 @@ const MoviesList = () => {
               <TableRow>
                 <TableCell>Name</TableCell>
                 <TableCell>Release Date</TableCell>
+                <TableCell>Type</TableCell>
                 <TableCell>IMDb ID</TableCell>
               </TableRow>
             </TableHead>
@@ -129,6 +130,7 @@ const MoviesList = () => {
                     </Link>
                   </TableCell>
                   <TableCell>{movie.Year}</TableCell>
+                  <TableCell>{movie.Type}</TableCell>
                   <TableCell>{movie.imdbID}</TableCell>
                 </TableRow>
               ))}
