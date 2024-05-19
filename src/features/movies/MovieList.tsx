@@ -2,6 +2,8 @@ import type React from 'react';
 import { useState, useEffect } from 'react';
 import { getMovies, setPage, setYear, setType } from './movieSlice';
 import type { RootState } from '../../app/store';
+import type { SelectChangeEvent
+} from "@mui/material";
 import {
   Box,
   Container,
@@ -18,7 +20,7 @@ import {
   MenuItem,
   Select,
   InputLabel,
-  FormControl, SelectChangeEvent
+  FormControl
 } from "@mui/material"
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
