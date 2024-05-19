@@ -70,6 +70,7 @@ const MoviesList = () => {
           value={searchTerm}
           onChange={handleSearchChange}
           margin="normal"
+          placeholder="Search for movies"
         />
         <Box my={2} display="flex" justifyContent="space-between">
           <FormControl

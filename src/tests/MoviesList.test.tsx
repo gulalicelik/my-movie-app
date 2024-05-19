@@ -17,7 +17,7 @@ describe('MoviesList', () => {
     expect(headingElement).toBeInTheDocument();
   });
 
-  test('renders search input', () => {
+  test('renders search input',  () => {
     render(
       <Provider store={store}>
         <MoviesList />
@@ -34,6 +34,7 @@ describe('MoviesList', () => {
       </Provider>
     );
     const inputElement = screen.getByPlaceholderText(/Search for movies/i);
+    await userEvent.clear(inputElement);
     await userEvent.type(inputElement, 'Batman');
     expect(inputElement).toHaveValue('Batman');
   });

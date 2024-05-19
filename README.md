@@ -61,6 +61,90 @@ Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
 
 The page will reload if you make edits. You will also see any lint errors in the console.
 
+## Testing
+
+This project uses Vitest and React Testing Library for unit and integration tests. Below are the steps to run the tests and details on the test structure.
+
+### Running Tests
+
+To run the tests, use the following command:
+
+```sh
+npm test
+```
+
+This command will execute all the test cases and provide a detailed report of the results.
+
+### Test Structure
+
+The tests are located in the `src/tests` directory and follow the structure of the application. Each component and Redux slice has corresponding test files to ensure comprehensive test coverage.
+
+#### Example Test Files
+
+- **Component Tests**: These tests verify the functionality and rendering of React components.
+   - `MoviesList.test.tsx`
+   - `MovieDetails.test.tsx`
+
+- **Redux Slice Tests**: These tests check the Redux slice actions and reducers.
+   - `moviesSlice.test.ts`
+
+#### Test Utilities
+
+- **setupTests.ts**: This file sets up the test environment and configurations for Jest and Testing Library.
+
+  ```typescript
+  import '@testing-library/jest-dom';
+  ```
+
+#### Sample Test Case
+
+Below is an example of a test case for the `MoviesList` component:
+
+```typescript
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { store } from '../../app/store';
+import MoviesList from './MoviesList';
+import userEvent from '@testing-library/user-event';
+
+describe('MoviesList', () => {
+  test('renders search input', () => {
+    render(
+      <Provider store={store}>
+        <MoviesList />
+      </Provider>
+    );
+    const inputElement = screen.getByPlaceholderText(/Search for movies/i);
+    expect(inputElement).toBeInTheDocument();
+  });
+
+  test('handles search input change', async () => {
+    render(
+      <Provider store={store}>
+        <MoviesList />
+      </Provider>
+    );
+    const inputElement = screen.getByPlaceholderText(/Search for movies/i);
+    await userEvent.clear(inputElement);
+    await userEvent.type(inputElement, 'Batman');
+    expect(inputElement).toHaveValue('Batman');
+  });
+});
+```
+
+### Adding New Tests
+
+To add new tests, create a new file in the `src/tests` directory following the naming convention of the component or slice being tested. Write test cases using Jest and React Testing Library to cover various scenarios and edge cases.
+
+For example, to add tests for a new component `NewComponent`, create a file named `NewComponent.test.tsx` in the `src/tests` directory.
+
+### Test Coverage
+
+Ensure that your tests cover all critical functionalities and edge cases to maintain the quality and reliability of the application.
+
+For any questions or issues regarding tests, please refer to the [Vitest documentation](https://vitest.dev/guide/) and [React Testing Library documentation](https://testing-library.com/docs/react-testing-library/intro/).
+
 ## Folder Structure
 
 The project structure is as follows:
